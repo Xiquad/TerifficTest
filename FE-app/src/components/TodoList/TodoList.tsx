@@ -66,6 +66,7 @@ const TodoList: FC = () => {
         open={isSnackbarOpen}
         autoHideDuration={3000}
         message={snackbarMessage}
+        data-testid="toast"
       />
     </>
   )

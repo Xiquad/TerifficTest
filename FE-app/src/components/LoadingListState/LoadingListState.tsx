@@ -3,7 +3,7 @@ import { List, ListItem, Skeleton } from '@mui/material';
 
 const LoadingListState: FC = () => {
   return (
-    <List>
+    <List data-testid="loading-list-state">
       <ListItem divider>
         <Skeleton variant="text" width="100%" height={80} />
       </ListItem>

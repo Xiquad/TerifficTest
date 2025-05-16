@@ -46,18 +46,19 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, sta
   return (
     <ListItem
       divider
+      data-testid="todo-list-item"
       secondaryAction={
         <Box sx={{ display: 'flex', gap: 2 }}>
           {
             isEditing ? (
               <>
                 <Tooltip title="Save">
-                <IconButton edge="end" onClick={handleSave} disabled={state === TodoState.UPDATING || state === TodoState.DELETING}>
+                <IconButton data-testid="save-button" edge="end" onClick={handleSave} disabled={state === TodoState.UPDATING || state === TodoState.DELETING}>
                   <SaveIcon />
                 </IconButton>
                 </Tooltip>
                 <Tooltip title="Cancel">
-                  <IconButton edge="end" onClick={handleCancel}>
+                  <IconButton data-testid="cancel-button" edge="end" onClick={handleCancel}>
                     <CancelIcon />
                   </IconButton>
                 </Tooltip>
@@ -65,12 +66,12 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, sta
             ) : (
               <>
                 <Tooltip title="Edit">
-                  <IconButton edge="end" onClick={toggleEdit} disabled={state === TodoState.UPDATING || state === TodoState.DELETING}>
+                  <IconButton data-testid="edit-button" edge="end" onClick={toggleEdit} disabled={state === TodoState.UPDATING || state === TodoState.DELETING}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton edge="end" onClick={handleDelete} disabled={state === TodoState.DELETING || state === TodoState.UPDATING}>
+                  <IconButton data-testid="delete-button" edge="end" onClick={handleDelete} disabled={state === TodoState.DELETING || state === TodoState.UPDATING}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
@@ -88,11 +89,13 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, sta
             onChange={(e) => setEditText(e.target.value)}
             variant="standard"
             autoFocus
+            data-testid="edit-text-field"
           />
         ) : (
           <>
             <Tooltip title="Mark as completed">
               <Checkbox
+                data-testid="complete-checkbox"
                 edge="start"
                 checked={todo.completed}
                 onChange={(e) => handleToggleCompleted(e.target.checked)}

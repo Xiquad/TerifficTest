@@ -3,7 +3,7 @@ import { List, ListItem, Typography } from '@mui/material';
 
 const ListEmptyState: FC = () => {
   return (
-    <List>
+    <List data-testid="list-empty-state">
       <ListItem>
         <Typography variant="body1" color="text.secondary">No todos found, add one to get started</Typography>
       </ListItem>

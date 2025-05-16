@@ -18,11 +18,12 @@ const TodoListContainer: FC<TodoListContainerProps> = ({children, onAddTodo, isL
   };
 
   return (
-    <Box>
+    <Box data-testid="todo-list-container">
       <Paper elevation={3} sx={{ p: 3 }}>
         <form onSubmit={handleAddTodo}>
           <Box sx={{ display: 'flex', gap: 1, mb: 3 }}>
             <TextField
+              data-testid="todo-list-input"
               fullWidth
               placeholder="Add a new todo"
               value={newTodo}
@@ -30,7 +31,7 @@ const TodoListContainer: FC<TodoListContainerProps> = ({children, onAddTodo, isL
             />
             {/* As a good practice, strings should be localized */}
             <Tooltip title="Add a new todo">
-              <Button type="submit" variant="contained" color="primary" disabled={isLoading || newTodo.trim() === ''}>
+              <Button data-testid="todo-list-add-button" type="submit" variant="contained" color="primary" disabled={isLoading || newTodo.trim() === ''}>
                 Add
               </Button>
             </Tooltip>
