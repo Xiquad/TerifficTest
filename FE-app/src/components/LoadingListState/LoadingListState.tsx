@@ -4,13 +4,13 @@ import { List, ListItem, Skeleton } from '@mui/material';
 const LoadingListState: FC = () => {
   return (
     <List>
-      <ListItem>
+      <ListItem divider>
         <Skeleton variant="text" width="100%" height={80} />
       </ListItem>
-      <ListItem>
+      <ListItem divider>
         <Skeleton variant="text" width="100%" height={80} />
       </ListItem>
-      <ListItem>
+      <ListItem divider>
         <Skeleton variant="text" width="100%" height={80} />
       </ListItem>
     </List>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from './constants';
-import { Todo, NewTodo, EditedTodo } from './dto';
+import { Todo, NewTodo, EditedTodo } from '../dto/Todo';
 
 export const fetchAllTodos = async (): Promise<Todo[]> => {
   const response = await axios.get(`${API_URL}/todos`);
@@ -12,8 +12,8 @@ export const createTodo = async (todo: NewTodo): Promise<Todo> => {
   return response.data;
 };
 
-export const updateTodo = async (id: string, todo: EditedTodo): Promise<Todo> => {
-  const response = await axios.put(`${API_URL}/todos/${id}`, todo);
+export const updateTodo = async (todo: EditedTodo): Promise<Todo> => {
+  const response = await axios.put(`${API_URL}/todos/${todo.id}`, todo);
   return response.data;
 };
 

@@ -5,7 +5,7 @@ const ListEmptyState: FC = () => {
   return (
     <List>
       <ListItem>
-        <Typography variant="body1">No todos found, add one to get started</Typography>
+        <Typography variant="body1" color="text.secondary">No todos found, add one to get started</Typography>
       </ListItem>
     </List>
   );

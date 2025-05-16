@@ -1,23 +1,25 @@
 import React, { FC, useState } from 'react';
-import { ListItem, ListItemText, Box, IconButton, Checkbox, TextField, LinearProgress, Tooltip } from '@mui/material';
+import { ListItem, ListItemText, Box, IconButton, Checkbox, TextField, LinearProgress, Tooltip, Skeleton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Todo } from '../../api/dto';
+import { Todo } from '../../dto/Todo';
+import { TodoState } from '../../dto/TodoStates';
 
 interface TodoItemProps {
   todo: Todo;
   onToggle: (id: string, completed: boolean) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string, text: string) => void;
-  isLoading: boolean;
+  state: TodoState;
 }
 
-const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, isLoading }) => {
+const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, state }) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
+
 
   const toggleEdit = () => {
     setIsEditing(true);
@@ -43,13 +45,14 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, isL
 
   return (
     <ListItem
+      divider
       secondaryAction={
         <Box sx={{ display: 'flex', gap: 2 }}>
           {
             isEditing ? (
               <>
                 <Tooltip title="Save">
-                <IconButton edge="end" onClick={handleSave}>
+                <IconButton edge="end" onClick={handleSave} disabled={state === TodoState.UPDATING || state === TodoState.DELETING}>
                   <SaveIcon />
                 </IconButton>
                 </Tooltip>
@@ -62,12 +65,12 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, isL
             ) : (
               <>
                 <Tooltip title="Edit">
-                  <IconButton edge="end" onClick={toggleEdit} disabled={isLoading}>
+                  <IconButton edge="end" onClick={toggleEdit} disabled={state === TodoState.UPDATING || state === TodoState.DELETING}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton edge="end" onClick={handleDelete} disabled={isLoading}>
+                  <IconButton edge="end" onClick={handleDelete} disabled={state === TodoState.DELETING || state === TodoState.UPDATING}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
@@ -93,25 +96,33 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, isL
                 edge="start"
                 checked={todo.completed}
                 onChange={(e) => handleToggleCompleted(e.target.checked)}
-                disabled={isLoading}
+                disabled={state === TodoState.UPDATING || state === TodoState.DELETING}
               />
             </Tooltip>
             <ListItemText primary={
-              <Box
-                component="span"
-                sx={{
-                  textDecoration: todo.completed ? 'line-through' : 'none',
-                  color: todo.completed ? 'text.secondary' : 'text.primary',
-                }}
-              >{todo.text}</Box>
+              state === TodoState.UPDATING ? (
+                <Skeleton variant="text" width="30%" height={20} /> 
+              ) : (
+                <Box
+                  component="span"
+                  sx={{
+                    textDecoration: todo.completed ? 'line-through' : 'none',
+                    color: todo.completed ? 'text.secondary' : 'text.primary',
+                  }}
+                >{todo.text}</Box>
+              )
             } secondary={
-              todo.createdAt.toLocaleString()
+              state === TodoState.UPDATING ? (
+                <Skeleton variant="text" width="40%" height={20} />
+              ) : (
+                todo.createdAt.toLocaleString()
+              )
             } />
           </>
         )
       }
       {
-        isLoading && (
+        state === TodoState.DELETING && (
           <Box sx={{width: '100%', position: 'absolute', bottom: 0, left: 0}}>
             <LinearProgress />
           </Box>

@@ -6,4 +6,4 @@ export interface Todo {
 }
 
 export type NewTodo = Omit<Todo, 'id' | 'createdAt'>;
-export type EditedTodo = Partial<NewTodo>;
+export type EditedTodo = Partial<Omit<Todo, 'createdAt'>>;
