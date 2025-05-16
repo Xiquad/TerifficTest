@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Button, Paper, TextField, Box, List } from '@mui/material';
+import { Button, Paper, TextField, Box, List, Tooltip } from '@mui/material';
 import LoadingListState from '../LoadingListState';
 
 interface TodoListContainerProps {
@@ -14,6 +14,7 @@ const TodoListContainer: FC<TodoListContainerProps> = ({children, onAddTodo, isL
   const handleAddTodo = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onAddTodo(newTodo);
+    setNewTodo('');
   };
 
   return (
@@ -28,9 +29,11 @@ const TodoListContainer: FC<TodoListContainerProps> = ({children, onAddTodo, isL
               onChange={(event) => setNewTodo(event.target.value)}
             />
             {/* As a good practice, strings should be localized */}
-            <Button type="submit" variant="contained" color="primary">
-              Add
-            </Button>
+            <Tooltip title="Add a new todo">
+              <Button type="submit" variant="contained" color="primary" disabled={isLoading || newTodo.trim() === ''}>
+                Add
+              </Button>
+            </Tooltip>
           </Box>
         </form>
 

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { ListItem, ListItemText, Box, IconButton, Checkbox, TextField } from '@mui/material';
+import { ListItem, ListItemText, Box, IconButton, Checkbox, TextField, LinearProgress, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
@@ -48,21 +48,29 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, isL
           {
             isEditing ? (
               <>
+                <Tooltip title="Save">
                 <IconButton edge="end" onClick={handleSave}>
                   <SaveIcon />
                 </IconButton>
-                <IconButton edge="end" onClick={handleCancel}>
-                  <CancelIcon />
-                </IconButton>
+                </Tooltip>
+                <Tooltip title="Cancel">
+                  <IconButton edge="end" onClick={handleCancel}>
+                    <CancelIcon />
+                  </IconButton>
+                </Tooltip>
               </>
             ) : (
               <>
-                <IconButton edge="end" onClick={toggleEdit}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton edge="end" onClick={handleDelete}>
-                  <DeleteIcon />
-                </IconButton>
+                <Tooltip title="Edit">
+                  <IconButton edge="end" onClick={toggleEdit} disabled={isLoading}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton edge="end" onClick={handleDelete} disabled={isLoading}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
               </>
             )
           }
@@ -80,11 +88,14 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, isL
           />
         ) : (
           <>
-            <Checkbox
-              edge="start"
-              checked={todo.completed}
-              onChange={(e) => handleToggleCompleted(e.target.checked)}
-            />
+            <Tooltip title="Mark as completed">
+              <Checkbox
+                edge="start"
+                checked={todo.completed}
+                onChange={(e) => handleToggleCompleted(e.target.checked)}
+                disabled={isLoading}
+              />
+            </Tooltip>
             <ListItemText primary={
               <Box
                 component="span"
@@ -97,6 +108,13 @@ const TodoListItem: FC<TodoItemProps> = ({ todo, onToggle, onDelete, onEdit, isL
               todo.createdAt.toLocaleString()
             } />
           </>
+        )
+      }
+      {
+        isLoading && (
+          <Box sx={{width: '100%', position: 'absolute', bottom: 0, left: 0}}>
+            <LinearProgress />
+          </Box>
         )
       }
     </ListItem>
